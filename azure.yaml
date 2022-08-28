@@ -5,11 +5,11 @@ metadata:
   template: todo-python-mongo-swa-func@0.0.1-beta
 services:
   web:
-    project: src/web
+    project: ./src/web
     dist: build
     language: js
     host: staticwebapp
   api:
-    project: src/api
+    project: ./src/api
     language: py
     host: function

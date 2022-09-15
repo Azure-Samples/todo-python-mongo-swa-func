@@ -12,7 +12,7 @@ module web './app/web.bicep' = {
 }
 
 // The application backend
-module api './app/api.bicep' = {
+module api './app/api-functions-python.bicep' = {
   name: 'api-resources'
   params: {
     environmentName: environmentName

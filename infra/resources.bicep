@@ -4,7 +4,7 @@ param principalId string = ''
 
 // The application frontend
 module web './app/web.bicep' = {
-  name: 'web-resources'
+  name: 'web'
   params: {
     environmentName: environmentName
     location: location
@@ -12,8 +12,8 @@ module web './app/web.bicep' = {
 }
 
 // The application backend
-module api './app/api-functions-python.bicep' = {
-  name: 'api-resources'
+module api './app/api.bicep' = {
+  name: 'api'
   params: {
     environmentName: environmentName
     location: location
@@ -27,7 +27,7 @@ module api './app/api-functions-python.bicep' = {
 
 // The application database
 module cosmos './app/db.bicep' = {
-  name: 'cosmos-resources'
+  name: 'cosmos'
   params: {
     environmentName: environmentName
     location: location
@@ -37,7 +37,7 @@ module cosmos './app/db.bicep' = {
 
 // Configure api to use cosmos
 module apiCosmosConfig './core/host/appservice-config-cosmos.bicep' = {
-  name: 'api-cosmos-config-resources'
+  name: 'api-cosmos-config'
   params: {
     appServiceName: api.outputs.apiName
     cosmosDatabaseName: cosmos.outputs.cosmosDatabaseName
@@ -48,7 +48,7 @@ module apiCosmosConfig './core/host/appservice-config-cosmos.bicep' = {
 
 // Backing storage for Azure functions backend API
 module storage './core/storage/storage-account.bicep' = {
-  name: 'storage-resources'
+  name: 'storage'
   params: {
     environmentName: environmentName
     location: location
@@ -57,7 +57,7 @@ module storage './core/storage/storage-account.bicep' = {
 
 // Create an App Service Plan to group applications under the same payment plan and SKU
 module appServicePlan './core/host/appserviceplan-functions.bicep' = {
-  name: 'appserviceplan-resources'
+  name: 'appserviceplan'
   params: {
     environmentName: environmentName
     location: location
@@ -66,7 +66,7 @@ module appServicePlan './core/host/appserviceplan-functions.bicep' = {
 
 // Store secrets in a keyvault
 module keyVault './core/security/keyvault.bicep' = {
-  name: 'keyvault-resources'
+  name: 'keyvault'
   params: {
     environmentName: environmentName
     location: location
@@ -76,7 +76,7 @@ module keyVault './core/security/keyvault.bicep' = {
 
 // Monitor application with Azure Monitor
 module monitoring './core/monitor/monitoring.bicep' = {
-  name: 'monitoring-resources'
+  name: 'monitoring'
   params: {
     environmentName: environmentName
     location: location

@@ -10,7 +10,7 @@ param serviceName string = 'api'
 param storageAccountName string
 
 module api '../core/host/functions-python.bicep' = {
-  name: 'api-functions-python-${serviceName}'
+  name: '${serviceName}-functions-python-module'
   params: {
     environmentName: environmentName
     location: location

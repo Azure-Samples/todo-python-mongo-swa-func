@@ -15,6 +15,7 @@ module api '../core/host/functions/functions.bicep' = {
     environmentName: environmentName
     location: location
     allowedOrigins: allowedOrigins
+    alwaysOn: false
     appSettings: appSettings
     applicationInsightsName: applicationInsightsName
     appServicePlanId: appServicePlanId

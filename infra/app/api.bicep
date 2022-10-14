@@ -22,7 +22,6 @@ module api '../core/host/functions/functions.bicep' = {
     keyVaultName: keyVaultName
     runtimeName: 'python'
     runtimeVersion: '3.8'
-    scmDoBuildDuringDeployment: true
     serviceName: serviceName
     storageAccountName: storageAccountName
   }

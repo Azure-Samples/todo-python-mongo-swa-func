@@ -61,7 +61,7 @@ module storage './core/storage/storage-account.bicep' = {
 }
 
 // Create an App Service Plan to group applications under the same payment plan and SKU
-module appServicePlan './core/host/appservice/appserviceplan.bicep' = {
+module appServicePlan './core/host/appserviceplan.bicep' = {
   name: 'appserviceplan'
   params: {
     environmentName: environmentName

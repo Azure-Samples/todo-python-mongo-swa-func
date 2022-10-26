@@ -3,7 +3,7 @@ param location string = resourceGroup().location
 param principalId string = ''
 
 // The application frontend
-module web './app/web.bicep' = {
+module web './app/web-staticwebapp.bicep' = {
   name: 'web'
   params: {
     environmentName: environmentName
@@ -12,14 +12,14 @@ module web './app/web.bicep' = {
 }
 
 // The application backend
-module api './app/api.bicep' = {
+module api './app/api-functions-python.bicep' = {
   name: 'api'
   params: {
     environmentName: environmentName
     location: location
     applicationInsightsName: monitoring.outputs.applicationInsightsName
     appServicePlanId: appServicePlan.outputs.appServicePlanId
-    keyVaultName: keyVault.outputs.keyVaultName
+    keyVaultName: keyVault.outputs.name
     storageAccountName: storage.outputs.name
     allowedOrigins: [ web.outputs.WEB_URI ]
     appSettings: {
@@ -36,18 +36,18 @@ module apiKeyVaultAccess './core/security/keyvault-access.bicep' = {
   params: {
     environmentName: environmentName
     location: location
-    keyVaultName: keyVault.outputs.keyVaultName
+    keyVaultName: keyVault.outputs.name
     principalId: api.outputs.API_IDENTITY_PRINCIPAL_ID
   }
 }
 
 // The application database
-module cosmos './app/db.bicep' = {
+module cosmos './app/cosmos-mongo-db.bicep' = {
   name: 'cosmos'
   params: {
     environmentName: environmentName
     location: location
-    keyVaultName: keyVault.outputs.keyVaultName
+    keyVaultName: keyVault.outputs.name
   }
 }
 
@@ -97,5 +97,5 @@ output APPLICATIONINSIGHTS_CONNECTION_STRING string = monitoring.outputs.applica
 output AZURE_COSMOS_CONNECTION_STRING_KEY string = cosmos.outputs.cosmosConnectionStringKey
 output AZURE_COSMOS_DATABASE_NAME string = cosmos.outputs.cosmosDatabaseName
 output AZURE_COSMOS_ENDPOINT string = cosmos.outputs.cosmosEndpoint
-output AZURE_KEY_VAULT_ENDPOINT string = keyVault.outputs.keyVaultEndpoint
+output AZURE_KEY_VAULT_ENDPOINT string = keyVault.outputs.endpoint
 output WEB_URI string = web.outputs.WEB_URI

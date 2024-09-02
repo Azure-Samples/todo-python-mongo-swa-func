@@ -111,11 +111,8 @@ module api './app/api-avm.bicep' = {
     name: !empty(apiServiceName) ? apiServiceName : '${abbrs.webSitesAppService}api-${resourceToken}'
     location: location
     tags: tags
-    kind: 'app'
+    kind: 'functionapp'
     appServicePlanId: appServicePlan.outputs.resourceId
-    siteConfig: {
-      alwaysOn: true
-    }
     appSettings: {
       API_ALLOW_ORIGINS: webUri
       AZURE_COSMOS_CONNECTION_STRING_KEY: connectionStringKey

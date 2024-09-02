@@ -26,9 +26,6 @@ param storageAccountName string = ''
 param webServiceName string = ''
 param apimServiceName string = ''
 param connectionStringKey string = 'AZURE-COSMOS-CONNECTION-STRING'
-param primaryReadonlyConnectionStringSecretName string= 'PRIMARY-READONLY-CONNECTION-STRING'
-param secondaryWriteConnectionStringSecretName string = 'SECONDARY-WRITE-CONNECTION-STRING'
-param secondaryReadonlyConnectionStringSecretName string = 'SECONDARY-READONLY-CONNECTION-STRING'
 param apimApiName string = 'todo-api'
 param apimLoggerName string = 'app-insights-logger'
 param collections array = [
@@ -121,6 +118,7 @@ module api './app/api-avm.bicep' = {
       AZURE_COSMOS_ENDPOINT: 'https://${cosmos.outputs.name}.documents.azure.com:443/'
       FUNCTIONS_EXTENSION_VERSION: '~4'
       FUNCTIONS_WORKER_RUNTIME: 'python'
+      SCM_DO_BUILD_DURING_DEPLOYMENT: true
     }
     appInsightResourceId: applicationInsights.outputs.resourceId
     linuxFxVersion: 'python|3.10'

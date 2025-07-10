@@ -1,6 +1,6 @@
 fastapi == 0.95.*
 uvicorn == 0.19.*
-beanie == 1.11.*
+azure-cosmos == 4.7.*
 python-dotenv == 0.20.*
 # 1.13.0b4 has a update supporting configurable timeouts on AzureDeveloperCredential
 # https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/identity/azure-identity/CHANGELOG.md#1130b4-2023-04-11

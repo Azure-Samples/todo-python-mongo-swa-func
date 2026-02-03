@@ -18,7 +18,7 @@ $ poetry install
 
 ## Running
 
-Before running, set the `AZURE_COSMOS_CONNECTION_STRING` environment variable to the connection-string for mongo/cosmos.
+Before running, set the `AZURE_COSMOS_CONNECTION_STRING` environment variable to the connection-string for Azure DocumentDB.
 
 Run the following common from the root of the api folder to start the app:
 

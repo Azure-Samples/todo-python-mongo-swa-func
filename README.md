@@ -14,7 +14,7 @@ products:
 - azure-pipelines
 urlFragment: todo-python-mongo-swa-func
 name: Static React Web App + Functions with Python API and MongoDB on Azure
-description: A complete ToDo app with Python FastAPI and Azure Cosmos API for MongoDB for storage. Uses Azure Developer CLI (azd) to build, deploy, and monitor
+description: A complete ToDo app with Python FastAPI and Azure DocumentDB (with MongoDB compatibility) for storage. Uses Azure Developer CLI (azd) to build, deploy, and monitor
 ---
 <!-- YAML front-matter schema: https://review.learn.microsoft.com/en-us/help/contribute/samples/process/onboarding?branch=main#supported-metadata-fields-for-readmemd -->
 
@@ -62,7 +62,7 @@ This application utilizes the following Azure resources:
 
 - [**Azure Static Web Apps**](https://docs.microsoft.com/azure/static-web-apps/) to host the Web frontend
 - [**Azure Function Apps**](https://docs.microsoft.com/azure/azure-functions/) to host the API backend
-- [**Azure Cosmos DB API for MongoDB**](https://docs.microsoft.com/azure/cosmos-db/mongodb/mongodb-introduction) for storage
+- [**Azure DocumentDB (with MongoDB compatibility)**](https://learn.microsoft.com/azure/documentdb/) for storage
 - [**Azure Monitor**](https://docs.microsoft.com/azure/azure-monitor/) for monitoring and logging
 - [**Azure Key Vault**](https://docs.microsoft.com/azure/key-vault/) for securing secrets
 

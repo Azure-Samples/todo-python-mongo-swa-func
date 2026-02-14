@@ -1,6 +1,4 @@
-import motor
 from azure.monitor.opentelemetry.exporter import AzureMonitorTraceExporter
-from beanie import init_beanie
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
@@ -38,9 +36,16 @@ def originList():
         
     return origins
     
-from .models import Settings, __beanie_models__
+from .models import Settings, CosmosService
 
 settings = Settings()
+
+# Initialize Cosmos service only if we have an endpoint
+if settings.AZURE_COSMOS_ENDPOINT:
+    cosmos_service = CosmosService(settings.AZURE_COSMOS_ENDPOINT, settings.AZURE_COSMOS_DATABASE_NAME)
+else:
+    cosmos_service = None
+
 app = FastAPI(
     description="Simple Todo API",
     version="2.0.0",
@@ -55,6 +60,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Add cosmos service to app state
+app.state.cosmos = cosmos_service
+
 if settings.APPLICATIONINSIGHTS_CONNECTION_STRING:
     exporter = AzureMonitorTraceExporter.from_connection_string(
         settings.APPLICATIONINSIGHTS_CONNECTION_STRING
@@ -68,13 +76,3 @@ if settings.APPLICATIONINSIGHTS_CONNECTION_STRING:
 
 
 from . import routes  # NOQA
-
-@app.on_event("startup")
-async def startup_event():
-    client = motor.motor_asyncio.AsyncIOMotorClient(
-        settings.AZURE_COSMOS_CONNECTION_STRING
-    )
-    await init_beanie(
-        database=client[settings.AZURE_COSMOS_DATABASE_NAME],
-        document_models=__beanie_models__,
-    )

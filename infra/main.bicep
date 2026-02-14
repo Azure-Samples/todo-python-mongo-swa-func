@@ -70,10 +70,9 @@ module api './app/api-appservice-avm.bicep' = {
     appServicePlanId: appServicePlan.outputs.resourceId
     appSettings: {
       API_ALLOW_ORIGINS: webUri
-      AZURE_COSMOS_CONNECTION_STRING_KEY: cosmos.outputs.connectionStringKey
       AZURE_COSMOS_DATABASE_NAME: cosmos.outputs.databaseName
       AZURE_KEY_VAULT_ENDPOINT:keyVault.outputs.uri
-      AZURE_COSMOS_ENDPOINT: 'https://${cosmos.outputs.databaseName}.documents.azure.com:443/'
+      AZURE_COSMOS_ENDPOINT: cosmos.outputs.endpoint
       FUNCTIONS_EXTENSION_VERSION: '~4'
       FUNCTIONS_WORKER_RUNTIME: 'python'
       SCM_DO_BUILD_DURING_DEPLOYMENT: true
@@ -116,6 +115,16 @@ module accessKeyVault 'br/public:avm/res/key-vault/vault:0.5.1' = {
   }
 }
 
+// Give the API access to Cosmos DB
+module cosmosRoleAssignment './app/cosmos-role-assignment.bicep' = {
+  name: 'cosmos-role-assignment'
+  scope: rg
+  params: {
+    cosmosAccountName: cosmos.outputs.accountName
+    principalId: api.outputs.SERVICE_API_IDENTITY_PRINCIPAL_ID
+  }
+}
+
 // The application database
 module cosmos './app/db-avm.bicep' = {
   name: 'cosmos'
@@ -124,7 +133,6 @@ module cosmos './app/db-avm.bicep' = {
     accountName: !empty(cosmosAccountName) ? cosmosAccountName : '${abbrs.documentDBDatabaseAccounts}${resourceToken}'
     location: location
     tags: tags
-    keyVaultResourceId: keyVault.outputs.resourceId
   }
 }
 
@@ -151,7 +159,7 @@ module storage 'br/public:avm/res/storage/storage-account:0.8.3' = {
   scope: rg
   params: {
     name: !empty(storageAccountName) ? storageAccountName : '${abbrs.storageStorageAccounts}${resourceToken}'
-    allowBlobPublicAccess: true
+    allowBlobPublicAccess: false
     dnsEndpointType: 'Standard'
     publicNetworkAccess:'Enabled'
     networkAcls:{
@@ -239,8 +247,8 @@ module apimApi 'br/public:avm/ptn/azd/apim-api:0.1.0' = if (useAPIM) {
 }
 
 // Data outputs
-output AZURE_COSMOS_CONNECTION_STRING_KEY string = cosmos.outputs.connectionStringKey
 output AZURE_COSMOS_DATABASE_NAME string = cosmos.outputs.databaseName
+output AZURE_COSMOS_ENDPOINT string = cosmos.outputs.endpoint
 
 // App outputs
 output APPLICATIONINSIGHTS_CONNECTION_STRING string = monitoring.outputs.applicationInsightsConnectionString
